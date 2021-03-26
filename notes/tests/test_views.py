@@ -37,7 +37,7 @@ class NoteListingTest(APITestCase):
 		required fields
 		"""
         # Missing title
-        data = self.note_date.copy()
+        data = self.note_data.copy()
         del data["title"]
         response = self.client.post(reverse("notes_lyric"), data=data)
         self.assertEqual(response.status_code, 400)
