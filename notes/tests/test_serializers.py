@@ -1,6 +1,9 @@
 from django.test import TestCase 
 
 from notes.serializers import NoteSerializer
+from notes.models import Note
+
+
 
 
 class NoteSerializerTest(TestCase):
@@ -21,14 +24,14 @@ class NoteSerializerTest(TestCase):
 		self.assertTrue(serializer.is_valid())
 		serializer_note = serializer.save()
 		for field in self.note_data:
-			self.assertEqual(exec(f"serializer_note.{field}"), self.note_data.get(field))
+			self.assertEqual(eval(f"serializer_note.{field}"), self.note_data.get(field))
 		
-		self.assertTrue(hasattr(note, "date_created"))
+		self.assertTrue(hasattr(serializer_note, "date_created"))
 		
 		# Assert For model level
 		model_note = Note.objects.first()
 		for field in self.note_data:
-			self.assertEqual(exec(f"model_note.{field}"), self.note_data.get(field))
+			self.assertEqual(eval(f"model_note.{field}"), self.note_data.get(field))
 		
 		self.assertEqual(serializer_note, model_note)
 
@@ -52,7 +55,7 @@ class NoteSerializerTest(TestCase):
 		del data["content"]
 
 		serializer = NoteSerializer(data=data)
-		self.assertFalse(serializer.is_valid()
+		self.assertFalse(serializer.is_valid())
 		with self.assertRaises(AssertionError):
 			serializer.save()
 
