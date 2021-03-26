@@ -18,7 +18,7 @@ class NoteTest(TestCase):
 		"""
 		note = Note.objects.create(**self.note_data)
 		for field in self.note_data:
-			self.assertEqual(exec(f"note.{field}"), self.note_data.get(field))
+			self.assertEqual(eval(f"note.{field}"), self.note_data.get(field))
 		
 		self.assertTrue(hasattr(note, "date_created"))
 		self.assertEqual(Note.objects.count(), 1)
