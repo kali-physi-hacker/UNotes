@@ -8,7 +8,8 @@ class Note(models.Model):
 
     def save(self, *args, **kwargs):
         if self.title != "" and self.content != "":
-            return super(Note, self).save(*args, **kwargs)
+            if self.date_created != "":
+                return super(Note, self).save(*args, **kwargs)
 
         # import pdb; pdb.set_trace()
         raise IntegrityError
