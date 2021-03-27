@@ -29,7 +29,7 @@ class NoteListingTest(APITestCase):
         note = Note.objects.first()
         for field in self.note_data:
             self.assertEqual(eval(f"note.{field}"), self.note_data.get(field))
-        self.assertIn(response.json(), "date_created")
+        self.assertIn("date_created", response.json())
 
     def test_creation_failure(self):
         """
