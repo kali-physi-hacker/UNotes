@@ -50,6 +50,6 @@ class NoteListingTest(APITestCase):
         del data["content"]
         response = self.client.post(reverse("notes_lyric"), data=data)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()["errors"]["title"][0], self.field_required_msg)
+        self.assertEqual(response.json()["errors"]["content"][0], self.field_required_msg)
 
         self.assertEqual(Note.objects.count(), 0)
