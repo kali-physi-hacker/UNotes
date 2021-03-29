@@ -13,9 +13,10 @@ class NoteListingTest(APITestCase):
 
         self.field_required_msg = "This field is required."
 
-    # Create some note items (10)
-    # for i in range(10):
-    #     Note.objects.create(title=f'{self.note_data["title"]} {i}', content=f'{self.note_data["content"]} {i}')
+        # Create some  note items (10)
+        self.existing_note_number = 10
+        for i in range(self.existing_note_number):
+            Note.objects.create(title=f'{self.note_data["title"]} {i}', content=f'{self.note_data["content"]} {i}')
 
     def test_creation_success(self):
         """
@@ -27,10 +28,10 @@ class NoteListingTest(APITestCase):
         for field in self.note_data:
             self.assertEqual(eval(f"response.json().get(field)"), self.note_data.get(field))
 
-        self.assertEqual(Note.objects.count(), 1)
+        self.assertEqual(Note.objects.count(), self.existing_note_number + 1)
 
         # Model level
-        note = Note.objects.first()
+        note = Note.objects.last()
         for field in self.note_data:
             self.assertEqual(eval(f"note.{field}"), self.note_data.get(field))
         self.assertIn("date_created", response.json())
@@ -47,7 +48,7 @@ class NoteListingTest(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["errors"]["title"][0], self.field_required_msg)
 
-        self.assertEqual(Note.objects.count(), 0)
+        self.assertEqual(Note.objects.count(), self.existing_note_number)
 
         # Missing content
         data = self.note_data.copy()
@@ -56,7 +57,7 @@ class NoteListingTest(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["errors"]["content"][0], self.field_required_msg)
 
-        self.assertEqual(Note.objects.count(), 0)
+        self.assertEqual(Note.objects.count(), self.existing_note_number)
 
     def test_get_all_failure(self):
         """
@@ -65,6 +66,6 @@ class NoteListingTest(APITestCase):
         """
         response = self.client.get(reverse("notes_list"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()), 10)  # Test that 10 notes are returned
+        self.assertEqual(len(response.json()), self.existing_note_number)  # Test that 10 notes are returned
 
         notes = response.json()
