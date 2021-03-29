@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import notes_lyric
+from .views import notes_list
 
 
-urlpatterns = [path("notes/", notes_lyric, name="notes_lyric")]
+urlpatterns = [path("notes/", notes_list, name="notes_list")]
