@@ -5,8 +5,6 @@ class Note(models.Model):
     title = models.CharField(max_length=120)
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
-    
-    
 
     def save(self, *args, **kwargs):
         if self.title != "" and self.content != "":
